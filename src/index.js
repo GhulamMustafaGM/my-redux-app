@@ -11,11 +11,25 @@ var defaultState = 0;
 const ADD_MONEY = "ADD_MONEY";
 const WITHDRAW = "WITHDRAW";
 
+//action creators
+const deposit = (amount) => {
+  return {
+    type: ADD_MONEY,
+    payload: { amount: amount }
+  }
+};
+
+const withdraw = (amount) => {
+  return {
+    type: WITHDRAW,
+    payload: { amount: amount }
+  }
+};
+
 //reducers
 const balanceReducer = (state = defaultState, action) => {
   console.log("reducer invoked", action);
-  switch (action.type)
-  {
+  switch (action.type) {
     case ADD_MONEY:
       return state + action.payload.amount;
     case WITHDRAW:
@@ -34,13 +48,11 @@ store.subscribe(() => {
 //dispatch
 //dispatch: pass an action to store; it invokes the reducer automatically
 
-store.dispatch({ type: ADD_MONEY,
-payload: { amount: 1000 }
-}); //1000
+store.dispatch(deposit(1000)); //1000
 
-store.dispatch({ type: ADD_MONEY, payload: { amount: 450 }}); //1450
+store.dispatch(deposit(450)); //1450
 
-store.dispatch({ type: WITHDRAW, payload: { amount: 250 }}); //1200
+store.dispatch(withdraw(250)); //1200
 
 
 ReactDOM.render(<App />, document.getElementById("root"));
