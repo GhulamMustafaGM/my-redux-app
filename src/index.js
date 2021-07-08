@@ -7,15 +7,19 @@ import { composeWithDevTools } from "redux-devtools-extension";
 //default state
 var defaultState = 0;
 
+//action types
+const ADD_MONEY = "ADD_MONEY";
+const WITHDRAW = "WITHDRAW";
+
 //reducers
 const balanceReducer = (state = defaultState, action) => {
   console.log("reducer invoked", action);
   switch (action.type)
   {
-    case "DEPOSIT":
-      return state + 100;
-    case "WITHDRAW":
-      return state - 100;
+    case ADD_MONEY:
+      return state + action.payload.amount;
+    case WITHDRAW:
+      return state - action.payload.amount;
     default:
       return state;
   }
@@ -23,18 +27,20 @@ const balanceReducer = (state = defaultState, action) => {
 
 //store
 var store = createStore(balanceReducer, composeWithDevTools());
-store.subscribe( () => {
+store.subscribe(() => {
   console.log(store.getState()); //get updated state
 });
 
 //dispatch
-store.dispatch({ type: "abc"}); //dispatch: pass an action to store; it invokes the reducer automatically
+//dispatch: pass an action to store; it invokes the reducer automatically
 
-store.dispatch({ type: "DEPOSIT"});
+store.dispatch({ type: ADD_MONEY,
+payload: { amount: 1000 }
+}); //1000
 
-store.dispatch({ type: "DEPOSIT"});
+store.dispatch({ type: ADD_MONEY, payload: { amount: 450 }}); //1450
 
-store.dispatch({ type: "WITHDRAW"});
+store.dispatch({ type: WITHDRAW, payload: { amount: 250 }}); //1200
 
 
 ReactDOM.render(<App />, document.getElementById("root"));
